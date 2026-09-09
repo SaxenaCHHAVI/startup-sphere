@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: startup-sphere-ml-engine
+    runtime: docker
+    dockerfilePath: ml_engine/Dockerfile
+    dockerContext: ml_engine
+    plan: standard
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8000

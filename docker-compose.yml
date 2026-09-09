@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  ml-engine:
+    build:
+      context: ./ml_engine
+      dockerfile: Dockerfile
+    container_name: startup-sphere-ml-engine
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: startup-sphere-client
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - ml-engine
+    restart: unless-stopped
