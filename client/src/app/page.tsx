@@ -261,7 +261,7 @@ function DashboardContent() {
       if (extracted.founder_experience_years) updatedMetrics.founder_experience_years = Math.round(extracted.founder_experience_years);
       if (extracted.cac) updatedMetrics.cac = Math.round(extracted.cac);
       if (extracted.ltv) updatedMetrics.ltv = Math.round(extracted.ltv);
-      if (extracted.churn_rate) updatedMetrics.churn_rate = extracted.churn_rate;
+      if (extracted.churn_rate !== undefined) updatedMetrics.churn_rate = extracted.churn_rate;
 
       setMetrics(updatedMetrics);
 
@@ -812,33 +812,34 @@ function DashboardContent() {
                     </span>
                   </div>
 
-                  <div className="mt-2 flex items-baseline gap-3">
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
                     <span className={`font-mono text-5xl font-extrabold tracking-tight ${theme.text}`}>
                       {Math.round(survivalProbability * 100)}%
                     </span>
 
-                    {/* Comparison Delta Badge */}
+                    {/* Comparison Delta Badge with clean padding */}
                     {deltaOdds !== 0 && (
                       <span
-                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold font-mono border ${
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold font-mono border shadow-sm ${
                           deltaOdds > 0
-                            ? "bg-emerald-950/60 text-emerald-300 border-emerald-800/40"
-                            : "bg-rose-950/60 text-rose-300 border-rose-800/40"
+                            ? "bg-emerald-950/70 text-emerald-300 border-emerald-700/50 shadow-emerald-950/40"
+                            : "bg-rose-950/70 text-rose-300 border-rose-700/50 shadow-rose-950/40"
                         }`}
                       >
                         {deltaOdds > 0 ? (
-                          <ArrowUpRight className="h-3.5 w-3.5" />
+                          <ArrowUpRight className="h-3.5 w-3.5 text-emerald-400" />
                         ) : (
-                          <ArrowDownRight className="h-3.5 w-3.5" />
+                          <ArrowDownRight className="h-3.5 w-3.5 text-rose-400" />
                         )}
                         {deltaOdds > 0 ? `+${deltaOdds}%` : `${deltaOdds}%`}
                       </span>
                     )}
                   </div>
 
-                  <div className="mt-2 flex items-center gap-2 text-xs text-slate-400">
-                    <span className="font-medium text-slate-300">95% CI:</span>
-                    <span className="font-mono text-purple-300">
+                  {/* High-visibility dedicated Confidence Interval chip */}
+                  <div className="mt-3 inline-flex items-center gap-2 rounded-lg border border-slate-800/80 bg-slate-900/70 px-3 py-1 text-xs text-slate-400">
+                    <span className="font-semibold text-slate-300">95% CI:</span>
+                    <span className="font-mono font-medium text-purple-300">
                       {(confidenceInterval[0] * 100).toFixed(1)}% – {(confidenceInterval[1] * 100).toFixed(1)}%
                     </span>
                   </div>
